@@ -66,7 +66,7 @@ def history(sensor_type):
         conn = mariadb.connect(**DB_CONFIG)
         cursor = conn.cursor()
         # 'log_time' 컬럼을 사용하도록 수정
-        query = f"SELECT log_time, {column} FROM Controller2 WHERE {column} IS NOT NULL ORDER BY log_time DESC LIMIT 10"
+        query = f"SELECT log_time, {column} FROM Controller3 WHERE {column} IS NOT NULL ORDER BY log_time DESC LIMIT 10"
         cursor.execute(query)
         logs = cursor.fetchall()
     except mariadb.Error as e:
