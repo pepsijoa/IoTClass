@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head> <meta charset="utf-8" /> <meta name="viewport" content="width=device-width, initial-scale=1" /> <title>KU IOT System Controller</title> <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> </head>
+<body> <div class="main-wrapper"> <div id="main-container"> <header class="topbar"> <div class="brand"> <img class="logo" src="{{ url_for('static', filename='images/kulogo.gif') }}" alt="logo" /> <span class="title">KU IOT System Controller</span> </div>
+                <nav class="actions">
+                    <!-- <a href="/history" class="btn">기록 조회 -->
+                    <div id="modeSwitch" class="mode"> 
+                    <span class="opt auto">AUTO</span> 
+                    <span class="thumb"></span> <span class="opt manu">MANU</span> 
+                </div>
+                </nav>
+            </header>
+            <div class="divider"></div> 
+            <div class="sensor-row"> 
+                <a href="/history/temperature" class="sensor-card-link">
+                    <div class="sensor-card">
+                        <img src="{{ url_for('static', filename='images/temp.png') }}" alt="온도 아이콘" class="sensor-icon" />
+                        <div class="sensor-label">온도</div>
+                        <div class="sensor-value"><span id="temperature-value">-</span> ℃</div> 
+                        <div id="climate-status" class="climate-normal">
+                            <span id="climate-status-text">정상</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/history/humidity" class="sensor-card-link">
+                    <div class="sensor-card"> 
+                        <img src="{{ url_for('static', filename='images/humidity.png') }}" alt="습도 아이콘" class="sensor-icon" />
+                        <div class="sensor-label">습도</div>
+                        <div class="sensor-value"><span id="humidity-value">-</span> %</div>
+                        <div id="humidity-status" class="humidity-normal">
+                            <span id="humidity-status-text">정상</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/history/distance" class="sensor-card-link">
+                    <div class="sensor-card"> 
+                        <img src="{{ url_for('static', filename='images/distance.png') }}" alt="거리 아이콘" class="sensor-icon" />
+                        <div class="sensor-label">주변 침입자 거리</div>
+                        <div class="sensor-value"><span id="current-distance-value">-</span> cm</div>
+                        <div id="proximity-status" class="status-normal">Status: Normal</div>
+                    </div>
+                </a>
+            </div>
+
+            <main class="cards"> <section class="card"> <img class="device-logo" src="{{ url_for('static', filename='images/AC.png') }}" alt="에어컨 로고" />
+                    <div class="device-label">에어컨</div>
+                    <label class="switch"> <input type="checkbox" id="airconSwitch">
+                        <span class="slider"></span>
+                    </label>
+                    <div class="switch-label" id="airconState">ON</div>
+                </section>
+                <section class="card"> <img class="device-logo" src="{{ url_for('static', filename='images/HEATER.png') }}" alt="히터 로고" />
+                    <div class="device-label">히터</div>
+                    <label class="switch"> <input type="checkbox" id="heaterSwitch">
+                        <span class="slider"></span>
+                    </label>
+                    <div class="switch-label" id="heaterState">OFF</div>
+                </section>
+                <section class="card"> <img class="device-logo" src="{{ url_for('static', filename='images/DEHUMIDIFIER.jpg') }}" alt="제습기 로고" />
+                    <div class="device-label">제습기</div>
+                    <label class="switch"> <input type="checkbox" id="humidifierSwitch">
+                        <span class="slider"></span>
+                    </label>
+                    <div class="switch-label" id="humidifierState">ON</div>
+                </section>
+            </main>
+            <div class="mode-desc hint" id="modeDesc">모드: <b>MANU</b> — <b>AUTO</b>일 때는 개별 ON/OFF가 비활성화됩니다.</div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script> // 거리값에 따라 테두리 색상 변경
+    function updateDistanceBorder() {
+        const distanceValue = parseFloat(document.getElementById('current-distance-value').textContent);
+        const container = document.getElementById('main-container');
+        
+        // 경고 기준을 20에서 10으로 수정 (10cm 이하일 때)
+        if (!isNaN(distanceValue) && distanceValue <= 10) {
+            container.classList.add('danger-border');
+        } else {
+            container.classList.remove('danger-border');
+        }
+    }
+    setInterval(updateDistanceBorder, 1000);
+    window.addEventListener('load', updateDistanceBorder);
+</script>
+
+    <script>
+        async function updateModeFromTouch() {
+            try {
+                const res = await fetch('/gettouch', { cache: 'no-store' });
+                const data = await res.json();
+                const manu = Number(data.current_state) === 1;
+
+                const modeEl = document.getElementById('modeSwitch');
+                if (!modeEl) return;
+                modeEl.classList.toggle('is-manu', manu);
+                modeEl.classList.toggle('is-auto', !manu);
+
+                const modeDesc = document.getElementById('modeDesc');
+                if (modeDesc) {
+                    if (manu) {
+                        modeDesc.innerHTML = '모드: <b>MANU</b> — <b>AUTO</b>일 때는 개별 ON/OFF가 비활성화됩니다.';
+                    } else {
+                        modeDesc.innerHTML = '모드: <b>AUTO</b> — 개별 ON/OFF가 비활성화됩니다.';
+                    }
+                }
+            } catch (e) {
+                /* 조용히 무시 */
+            }
+        }
+        setInterval(updateModeFromTouch, 1000);
+        window.addEventListener('load', updateModeFromTouch);
+    </script>
+</body>
+</html>

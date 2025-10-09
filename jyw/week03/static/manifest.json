@@ -1,0 +1,21 @@
+{
+  "name": "IoT System Controller",
+  "short_name": "IoT 컨트롤러",
+  "description": "라즈베리파이를 이용한 스마트홈 IoT 시스템 컨트롤러",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "icons": [
+    {
+      "src": "/static/images/kulogo_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/images/kulogo_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>LED Controller</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>IOT System Controller</h1>
+    <hr>
+
+    <div class="content-wrapper">
+        <div class="led-section">
+            <h3>LED1, LED2, LED3</h3>
+
+            <p>
+                <b>LED1: {% if ledStates[0]==1 %} ON {% else %} OFF {% endif %}</b>
+                <a href="{{ url_for('ledswitch', LEDn=0, state=1) }}" class="button on">ON</a>
+                <a href="{{ url_for('ledswitch', LEDn=0, state=0) }}" class="button off">OFF</a>
+            </p>
+
+            <p>
+                <b>LED2: {% if ledStates[1]==1 %} ON {% else %} OFF {% endif %}</b>
+                <a href="{{ url_for('ledswitch', LEDn=1, state=1) }}" class="button on">ON</a>
+                <a href="{{ url_for('ledswitch', LEDn=1, state=0) }}" class="button off">OFF</a>
+            </p>
+
+            <p>
+                <b>LED3: {% if ledStates[2]==1 %} ON {% else %} OFF {% endif %}</b>
+                <a href="{{ url_for('ledswitch', LEDn=2, state=1) }}" class="button on">ON</a>
+                <a href="{{ url_for('ledswitch', LEDn=2, state=0) }}" class="button off">OFF</a>
+            </p>
+        </div>
+
+        <div class="counter-section">
+            <p>Current Counter : <span id="counter">0</span></p>
+        </div>
+
+        <div class="distance-monitoring-section">
+            <h3>주변 침입자 거리</h3>
+            <div class="distance-display">
+                <div class="sensor-icon">
+                    <span class="icon-placeholder">📡</span>
+                </div>
+                <p class="current-distance-value">
+                    <span id="current-distance-value">
+                        {% if distance != -1 %}
+                            {{ "%.0f" | format(distance) }} {% else %}
+                            측정 불가
+                        {% endif %}
+                    </span> cm
+                </p>
+            </div>
+            <p><b id="proximity-status" class="{% if alert %}status-alert{% else %}status-normal{% endif %}">
+                Status: {% if alert %}PROXIMITY ALERT!{% else %}Normal{% endif %}
+            </b></p>
+        </div>
+
+        <div class="touch-sensor-section">
+            <h3>터치 센서</h3>
+            <div class="touch-display">
+                <div class="touch-icon">
+                    <span class="touch-icon-placeholder">👆</span>
+                </div>
+                <p class="touch-status-text">
+                    <span id="touch-status">
+                        {% if touch_detected %}터치 감지됨{% else %}터치 없음{% endif %}
+                    </span>
+                </p>
+            </div>
+            <p><b id="touch-indicator" class="{% if touch_detected %}touch-active{% else %}touch-inactive{% endif %}">
+                Status: {% if touch_detected %}TOUCHED!{% else %}No Touch{% endif %}
+            </b></p>
+        </div>
+
+        <div class="temperature-humidity-section">
+            <h3>온도 & 습도</h3>
+            <div class="temp-humidity-container">
+                <div class="temperature-display">
+                    <div class="temp-icon">
+                        <span class="temp-icon-placeholder">🌡️</span>
+                    </div>
+                    <div class="temp-info">
+                        <p class="temp-label">온도</p>
+                        <p class="temp-value">
+                            <span id="temperature-value">
+                                {% if temperature is not none %}{{ "%.1f" | format(temperature) }}{% else %}--{% endif %}
+                            </span>°C
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="humidity-display">
+                    <div class="humidity-icon">
+                        <span class="humidity-icon-placeholder">💧</span>
+                    </div>
+                    <div class="humidity-info">
+                        <p class="humidity-label">습도</p>
+                        <p class="humidity-value">
+                            <span id="humidity-value">
+                                {% if humidity is not none %}{{ "%.1f" | format(humidity) }}{% else %}--{% endif %}
+                            </span>%
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <p><b id="climate-status" class="climate-normal">
+                Status: <span id="climate-status-text">모니터링 중</span>
+            </b></p>
+        </div>
+    </div>
+        
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

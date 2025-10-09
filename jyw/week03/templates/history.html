@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ sensor_info.title }} 히스토리 - IoT 모니터링</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .chart-container {
+            padding: 30px;
+            background: white;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            margin-bottom: 30px;
+        }
+        
+        .table-container {
+            padding: 0 30px 30px 30px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .data-table th {
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .no-data i {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-title {
+            font-size: 1.5em;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #333;
+            padding-bottom: 10px;
+        }
+        
+        .refresh-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .refresh-button:hover {
+            background: #218838;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .chart-container, .table-container {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="history.back()">← 뒤로 가기</button>
+    
+    <div class="container">
+        <div class="header">
+            <h1>{{ sensor_info.title }} 히스토리</h1>
+            <p>실시간 센서 데이터 모니터링 및 분석</p>
+        </div>
+        
+        {% if has_data %}
+        <div class="stats-container">
+            <div class="stat-card" style="border-left: 4px solid {{ sensor_info.color }};">
+                <div class="stat-value" style="color: {{ sensor_info.color }};">{{ "%.1f"|format(stats.current) }}{{ sensor_info.unit }}</div>
+                <div class="stat-label">현재 값</div>
+            </div>
+            <div class="stat-card" style="border-left: 4px solid {{ sensor_info.color }};">
+                <div class="stat-value" style="color: {{ sensor_info.color }};">{{ "%.1f"|format(stats.max) }}{{ sensor_info.unit }}</div>
+                <div class="stat-label">최대 값</div>
+            </div>
+            <div class="stat-card" style="border-left: 4px solid {{ sensor_info.color }};">
+                <div class="stat-value" style="color: {{ sensor_info.color }};">{{ "%.1f"|format(stats.min) }}{{ sensor_info.unit }}</div>
+                <div class="stat-label">최소 값</div>
+            </div>
+            <div class="stat-card" style="border-left: 4px solid {{ sensor_info.color }};">
+                <div class="stat-value" style="color: {{ sensor_info.color }};">{{ "%.1f"|format(stats.avg) }}{{ sensor_info.unit }}</div>
+                <div class="stat-label">평균 값</div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="section-title">📊 {{ sensor_info.title }} 변화 그래프</div>
+            <button class="refresh-button" onclick="location.reload()">🔄 새로고침</button>
+            <div class="chart-wrapper">
+                <canvas id="sensorChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <div class="section-title">📋 최근 기록 (최근 10개)</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="background: {{ sensor_info.color }};">시간</th>
+                        <th style="background: {{ sensor_info.color }};">{{ sensor_info.title }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reading in readings %}
+                    <tr>
+                        <td>{{ reading['timestamp'].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ "%.1f"|format(reading['value']) }} {{ sensor_info.unit }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="no-data">
+            <div>📊</div>
+            <h2>데이터가 없습니다</h2>
+            <p>아직 {{ sensor_info.title }} 데이터가 수집되지 않았습니다.<br>
+            잠시 후 다시 시도해주세요.</p>
+            <button class="refresh-button" onclick="location.reload()">🔄 새로고침</button>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if has_data %}
+    <script>
+    // Chart.js 설정
+    const ctx = document.getElementById('sensorChart').getContext('2d');
+    // 서버에서 전달받은 데이터
+    const chartLabels = {{ chart_data['labels'] | tojson | safe }};
+    const chartValues = {{ chart_data['values'] | tojson | safe }};
+        
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: '{{ sensor_info.title }} ({{ sensor_info.unit }})',
+                    data: chartValues,
+                    borderColor: '{{ sensor_info.color }}',
+                    backgroundColor: '{{ sensor_info.color }}33', // 20% opacity
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: '{{ sensor_info.color }}',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '{{ sensor_info.title }} 시간별 변화',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        },
+                        padding: 20
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '{{ sensor_info.color }}',
+                        borderWidth: 1,
+                        cornerRadius: 6,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return '{{ sensor_info.title }}: ' + context.parsed.y.toFixed(1) + ' {{ sensor_info.unit }}';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: '시간',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        ticks: {
+                            maxTicksLimit: 10,
+                            font: {
+                                size: 11
+                            }
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: '{{ sensor_info.title }} ({{ sensor_info.unit }})',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value.toFixed(1) + ' {{ sensor_info.unit }}';
+                            }
+                        }
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutQuart'
+                }
+            }
+        });
+
+        // 차트 반응형 처리
+        window.addEventListener('resize', function() {
+            chart.resize();
+        });
+
+        // 자동 새로고침 (5초마다)
+        setInterval(function() {
+            location.reload();
+        }, 5000); // 5000ms = 5초
+    </script>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>기록 조회</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { padding: 20px; }
+        .chart-container { width: 80%; margin: 20px auto; }
+        table { width: 80%; margin: 20px auto; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <h1 style="text-align: center;">최근 {{ title }} 기록</h1>
+        
+        <div class="chart-container">
+            <canvas id="sensorChart"></canvas>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>측정 시간</th>
+                    <th>{{ title }} ({{ unit }})</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log[0].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ "%.1f"|format(log[1]) if log[1] is not none else 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/" class="btn primary">대시보드로 돌아가기</a>
+        </div>
+    </div>
+
+    <script>
+        const logs = {{ logs | tojson }};
+        const pageTitle = {{ title | tojson }};
+        const pageUnit = {{ unit | tojson }};
+
+        logs.reverse(); // 시간순으로 정렬
+
+        const labels = logs.map(log => new Date(log[0]).toLocaleTimeString('ko-KR'));
+        const values = logs.map(log => log[1]);
+
+        const ctx = document.getElementById('sensorChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    // 그래프 라벨을 동적으로 설정
+                    label: `${pageTitle} (${pageUnit})`,
+                    data: values,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            }
+        });
+    </script>
+</body>
+</html>

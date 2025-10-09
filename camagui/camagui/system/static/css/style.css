@@ -1,0 +1,366 @@
+.mode-desc b {
+  font-weight: bold !important;
+}
+/* 전체를 감싸는 태두리 */
+.main-wrapper {
+  border: 3px solid #b7c7b7;
+  border-radius: 18px;
+  max-width: 950px;
+  margin: 28px auto 0 auto;
+  background: #f9faf8;
+  box-shadow: 0 4px 24px 0 #b7c7b733;
+  padding-bottom: 24px;
+}
+
+/* 상단 구분선(섹션 가르는 선) */
+.divider {
+  width: 38%;
+  max-width: 180px;
+  height: 2px;
+  background: #dbe7db;
+  border-radius: 2px;
+  margin: 10px auto 14px auto;
+}
+.mode-desc.hint {
+  margin-top: 10px;
+  margin-left: 38px;
+}
+/* 센서 카드 상단 행 */
+.sensor-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 800px;
+  margin: 24px auto 16px auto;
+}
+.sensor-card {
+  background: #f4f7f4;
+  border: 2px solid #dbe7db;
+  border-radius: 16px;
+  padding: 18px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.sensor-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 6px;
+}
+.sensor-label {
+  font-size: 15px;
+  color: #444;
+  margin-bottom: 2px;
+}
+.sensor-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1a3a1a;
+}
+
+/* 제어 카드 내부 */
+.device-label {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 8px 0 8px 0;
+  text-align: center;
+}
+.switch-label {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #219653;
+  position: center;
+}
+
+/* 경고 테두리 */
+#main-container.danger-border {
+  border: 4px solid #e53935 !important;
+  border-radius: 18px;
+  box-shadow: 0 0 0 4px #e5393533;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+/* 기본 리셋 & 폰트 */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Arial, sans-serif;
+  color: #111;
+  background: #f6f7fb;
+}
+
+/* 시각적 숨김 (스크린리더 접근성 유지) */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* 상단 바 */
+.topbar {
+  position: sticky; top: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 16px;
+  background: #ffffffcc;
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid #e8e8ef;
+  z-index: 10;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.logo { width: 90px; height: 80px; object-fit: contain; }
+/* 센서 카드 내 기기 로고 및 스위치 */
+.device-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.device-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 8px auto;
+}
+/* 슬라이드 스위치 스타일 */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+.switch input:checked + .slider {
+  background-color: #2196F3;
+}
+.switch input:checked + .slider:before {
+  transform: translateX(26px);
+}
+.title { font-weight: 700; letter-spacing: .2px; }
+
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn {
+  display: inline-block;
+  padding: 8px 12px;
+  border: 1px solid #d8d9e0;
+  border-radius: 999px;
+  background: #fff;
+  text-decoration: none;
+  color: #222;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform .05s ease, background .15s ease, box-shadow .15s ease;
+}
+.btn:hover { background: #f2f3f7; }
+.btn:active { transform: translateY(1px); }
+.btn.primary {
+  border-color: #3b82f6;
+  background: #3b82f6;
+  color: #fff;
+}
+
+/* 카드 그리드 */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 800px;
+  margin: 0 auto 0 auto;
+  padding: 20px 0 0 0;
+}
+@media (max-width: 1000px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .cards { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e9eaf2;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(24, 27, 51, 0.06);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 700;
+}
+.card.wide { grid-column: 1 / -1; }
+
+/* KPI 숫자 강조 */
+.kpi {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  margin: 6px 0 2px;
+}
+
+/* 배지 (거리 알람) */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid #e5e7f0;
+  background: #f4f6fb;
+  color: #444;
+  margin-top: 6px;
+}
+.badge.ok {
+  border-color: #22c55e33;
+  background: #22c55e1a;
+  color: #15803d;
+}
+.badge.danger {
+  border-color: #ef444433;
+  background: #ef44441a;
+  color: #991b1b;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(239,68,68,.35); }
+  70% { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+  100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+}
+
+/* ── 모드 토글 UI (표시 전용) ── */
+
+/* 기존 thumb span은 숨김 처리 */
+.mode .thumb {
+  display: none;
+}
+
+/* 전체 컨테이너 스타일 */
+.mode {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #eef1f5; /* 부드러운 배경색 */
+  border-radius: 999px;
+  padding: 4px;
+  cursor: pointer;
+  border: none; /* 테두리 제거 */
+}
+
+/* 슬라이드 역할을 하는 가상요소(::before) */
+.mode::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: calc(100% - 8px);
+  width: 80px; /* 슬라이드 너비, 아래 .opt의 width와 맞춤 */
+  background-color: #fff;
+  border-radius: 999px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.25s ease-in-out;
+  z-index: 1;
+}
+
+/* MANUAL 모드일 때 슬라이드 이동 */
+.mode.is-manu::before {
+  transform: translateX(80px); /* 슬라이드 너비만큼 이동 */
+}
+
+/* AUTO, MANUAL 텍스트 스타일 */
+.mode .opt {
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 0;
+  width: 80px; /* 텍스트 영역 너비, 위 슬라이드 너비와 맞춤 */
+  text-align: center;
+  color: #5f6b7c; /* 비활성 텍스트 색상 */
+  opacity: 1;
+  transition: color 0.25s ease-in-out;
+  z-index: 2; /* 슬라이드보다 위에 위치 */
+  position: relative;
+  transform: none; /* 기존 확대 효과 제거 */
+}
+
+/* 활성화된 텍스트 스타일 (색상만 변경) */
+.mode.is-auto .opt.auto,
+.mode.is-manu .opt.manu {
+  color: #111; /* 활성 텍스트는 진하게 */
+}
+
+/* 센서 상태 표시 스타일 */
+.status-normal, .status-alert, .climate-normal, .climate-hot, .climate-cold, .climate-humid, .climate-dry, .climate-error {
+    font-size: 14px;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.status-normal, .climate-normal {
+    color: #166534;
+    background-color: #f0fdf4;
+}
+
+.status-alert, .climate-hot, .climate-error {
+    color: #991b1b;
+    background-color: #fef2f2;
+}
+
+.climate-cold { 
+    color: #1e40af; 
+    background-color: #eff6ff; 
+}
+.climate-humid { 
+    color: #064e3b; 
+    background-color: #ecfdf5; 
+}
+.climate-dry { 
+    color: #9a3412; 
+    background-color: #fff7ed; 
+}
+
+.sensor-card-link {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: inherit;       /* 부모 요소의 글자색 상속 */
+}
+
+.sensor-card-link .sensor-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.sensor-card-link:hover .sensor-card {
+    cursor: pointer;
+    transform: translateY(-5px); /* 살짝 위로 이동하는 효과 */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* 그림자 효과 */
+}

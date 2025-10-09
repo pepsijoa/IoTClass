@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>온도 센서 데이터 출력</title>
+</head>
+<body>
+    <h1>서버에서 전달받은 10개의 온도 데이터</h1>
+    <ul>
+        {% for item in data %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

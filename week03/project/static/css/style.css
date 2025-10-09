@@ -1,0 +1,343 @@
+/* static/css/style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 20px;
+}
+
+h1 {
+    color: #0056b3;
+}
+
+.content-wrapper {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.led-section p {
+    margin-bottom: 10px;
+}
+
+.button {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.button.on {
+    background-color: #28a745; /* Green for ON */
+}
+
+.button.on:hover {
+    background-color: #218838;
+}
+
+.button.off {
+    background-color: #dc3545; /* Red for OFF */
+}
+
+.button.off:hover {
+    background-color: #c82333;
+}
+
+.counter-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+#counter {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* --- 거리 모니터링 섹션 스타일 추가 --- */
+.distance-monitoring-section {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f0f0e0; /* 연한 노란색 배경 (이미지와 유사) */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center; /* 가운데 정렬 */
+}
+
+.distance-monitoring-section h3 {
+    font-size: 1.8em;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.distance-display {
+    display: flex; /* 아이콘과 텍스트를 한 줄에 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    justify-content: center; /* 수평 가운데 정렬 */
+    margin-bottom: 15px;
+}
+
+.sensor-icon {
+    font-size: 3em; /* 아이콘 크기 */
+    margin-right: 15px;
+    color: #666; /* 아이콘 색상 */
+}
+
+/* 예시 아이콘 스타일 - 실제 아이콘 사용 시 제거 */
+.icon-placeholder {
+    display: inline-block;
+    width: 60px; /* 아이콘 크기 */
+    height: 60px;
+    line-height: 60px; /* 텍스트 수직 가운데 정렬 */
+    border: 2px solid #666;
+    border-radius: 50%; /* 원형 테두리 */
+    text-align: center;
+    background-color: #fff;
+    font-size: 2em; /* 실제 텍스트 아이콘 크기 */
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+
+.current-distance-value {
+    font-size: 3.5em; /* 큰 글씨로 거리 표시 */
+    font-weight: bold;
+    color: #333;
+    margin: 0; /* 기본 마진 제거 */
+}
+
+#proximity-status {
+    font-size: 1.3em;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-block; /* 배경색이 텍스트에만 적용되도록 */
+}
+
+.status-normal {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    animation: blink 1s infinite; /* 알람 시 깜빡임 효과 */
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* --- 터치 센서 섹션 스타일 --- */
+.touch-sensor-section {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f0f8ff; /* 연한 하늘색 배경 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.touch-sensor-section h3 {
+    font-size: 1.8em;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.touch-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.touch-icon {
+    font-size: 3em;
+    margin-right: 15px;
+    color: #666;
+}
+
+.touch-icon-placeholder {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border: 2px solid #666;
+    border-radius: 50%;
+    text-align: center;
+    background-color: #fff;
+    font-size: 2em;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+.touch-status-text {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+#touch-indicator {
+    font-size: 1.3em;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-block;
+}
+
+.touch-inactive {
+    background-color: #e9ecef;
+    color: #6c757d;
+}
+
+.touch-active {
+    background-color: #fff3cd;
+    color: #856404;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* --- 온도/습도 센서 섹션 스타일 --- */
+.temperature-humidity-section {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f8f9fa; /* 연한 회색 배경 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.temperature-humidity-section h3 {
+    font-size: 1.8em;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.temp-humidity-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.temperature-display, .humidity-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+}
+
+.temp-icon, .humidity-icon {
+    font-size: 2.5em;
+    margin-right: 15px;
+}
+
+.temp-icon-placeholder, .humidity-icon-placeholder {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 1.8em;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    border: 2px solid #dee2e6;
+}
+
+.temp-info, .humidity-info {
+    text-align: left;
+}
+
+.temp-label, .humidity-label {
+    font-size: 1.2em;
+    color: #6c757d;
+    margin: 0;
+    font-weight: 500;
+}
+
+.temp-value, .humidity-value {
+    font-size: 2.2em;
+    font-weight: bold;
+    color: #333;
+    margin: 5px 0 0 0;
+}
+
+#climate-status {
+    font-size: 1.3em;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-block;
+}
+
+/* 기후 상태별 스타일 */
+.climate-normal {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.climate-cold {
+    background-color: #cce7ff;
+    color: #004085;
+}
+
+.climate-hot {
+    background-color: #ffe6cc;
+    color: #cc4400;
+    animation: heat-pulse 2s infinite;
+}
+
+.climate-humid {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.climate-dry {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.climate-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    animation: blink 1s infinite;
+}
+
+@keyframes heat-pulse {
+    0% { background-color: #ffe6cc; }
+    50% { background-color: #ffcc99; }
+    100% { background-color: #ffe6cc; }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+    .temp-humidity-container {
+        flex-direction: column;
+    }
+    
+    .temperature-display, .humidity-display {
+        width: 100%;
+        max-width: 300px;
+    }
+}

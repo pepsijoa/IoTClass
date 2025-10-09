@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>데이터 출력</title>
+</head>
+<body>
+    <h1>서버에서 전달받은 10개의 데이터</h1>
+    <div id = "listContainer"></div>
+
+    <script>
+        const data = {{data | tojson | safe}};
+
+        const ul = document.createElement('ul');
+
+        data.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            ul.appendChild(li);
+        });
+
+        document.getElementById('listContainer').appendChild(ul);
+    </script>
+</body>
+</html>

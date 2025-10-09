@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KU IOT System Controller</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}"> <!-- 웹앱 매니페스트 파일 링크 -->
+    <meta name="theme-color" content="#667eea">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/kulogo.jpeg') }}" alt="KU Logo" style="height: 40px;">
+                <h1>IOT System Controller</h1>
+            </div>
+            <div class="mode-selector">
+                <button id="auto-btn" class="mode-btn active">AUTO</button>
+                <button id="manual-btn" class="mode-btn">MANUAL</button>
+            </div>
+        </header>
+
+        <section class="sensor-grid">
+            <a href="/history/temperature" class="card-link">
+                <div class="card sensor-card">
+                    <i class="fa-solid fa-temperature-half icon"></i>
+                    <div class="sensor-info">
+                        <span class="label">온도</span>
+                        <span class="value" id="temp-value">--.- °C</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/history/humidity" class="card-link">
+                <div class="card sensor-card">
+                    <i class="fa-solid fa-droplet icon"></i>
+                    <div class="sensor-info">
+                        <span class="label">습도</span>
+                        <span class="value" id="humidity-value">--.- %</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/history/distance" class="card-link">
+                <div class="card sensor-card" id="distance-card">
+                    <i class="fa-solid fa-person-walking-arrow-right icon"></i>
+                    <div class="sensor-info">
+                        <span class="label">주변 침입자 거리</span>
+                        <span class="value" id="distance-value">-.-- m</span>
+                    </div>
+                </div>
+            </a>
+        </section>
+
+        <section class="device-grid">
+            <div class="card device-card">
+                <img src="{{ url_for('static', filename='images/aircon.png') }}" class="device-icon" alt="에어컨 아이콘" style="height: 64px;">
+                <span class="label">에어컨</span>
+                <label class="switch">
+                    <input type="checkbox" id="aircon-toggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="card device-card">
+                <img src="{{ url_for('static', filename='images/heat.png') }}" class="device-icon" alt="히터 아이콘">
+                <span class="label">히터</span>
+                <label class="switch">
+                    <input type="checkbox" id="heater-toggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="card device-card">
+                <img src="{{ url_for('static', filename='images/de.png') }}" class="device-icon" alt="제습기 아이콘">
+                <span class="label">제습기</span>
+                <label class="switch">
+                    <input type="checkbox" id="dehumidifier-toggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </section>
+
+        <footer>
+            <p id="footer-note">모드: AUTO — AUTO일 때는 개별 기기 ON/OFF가 비활성화됩니다.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}")   // 서비스워커 등록
+                    .then(registration => {
+                        console.log('Service Worker registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('Service Worker registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
