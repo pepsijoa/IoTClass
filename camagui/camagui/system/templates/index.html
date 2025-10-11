@@ -120,21 +120,21 @@
         window.addEventListener('load', updateModeFromTouch);
     </script>
     <script>
-            // 브라우저가 서비스 워커를 지원하는지 확인합니다.
-            if ('serviceWorker' in navigator) {
-                // 페이지가 로드되면 서비스 워커를 등록합니다.
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register("{{ url_for('static', filename='js/sw.js') }}",
-                        { scope: '/' }
-                    )
-                        .then(registration => {
-                            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                        })
-                        .catch(err => {
-                            console.log('ServiceWorker registration failed: ', err);
-                        });
-                });
-            }
+        console.log("Checking for service worker support..."); // 1번 로그
+
+        if ('serviceWorker' in navigator) {
+            console.log("Service worker is supported!"); // 2번 로그
+
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register("{{ url_for('static', filename='js/sw.js') }}", { scope: '/' })
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
     </script>
 </body>
 </html>
