@@ -124,7 +124,7 @@
                 // 페이지가 로드되면 서비스 워커를 등록합니다.
                 window.addEventListener('load', () => {
                     navigator.serviceWorker.register("{{ url_for('static', filename='js/sw.js') }}",
-                        { scope: './' }
+                        { scope: '/' }
                     )
                         .then(registration => {
                             console.log('ServiceWorker registration successful with scope: ', registration.scope);
