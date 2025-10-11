@@ -145,5 +145,5 @@ if __name__ == '__main__':
     threading.Thread(target=LoggerTask, daemon=True).start()
     
     print("IoT 시스템 웹 서버 시작됨...")
-    app.run(port=8080, host='0.0.0.0')
+    app.run(port=5000, host='0.0.0.0')
 
